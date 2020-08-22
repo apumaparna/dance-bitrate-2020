@@ -30,8 +30,36 @@
       stop
     </button>
 
-    <div style= "display: none" id="sequencer"></div>
+    <div style="display: none" id="sequencer"></div>
+
+    <div></div>
+
+    <label for="keys">Choose a key:</label>
+
+    <select name="keys" id="keys">
+      <option value="C">C</option>
+      <option value="F">F</option>
+      <option value="Bb">B flat</option>
+      <option value="Eb">E flat</option>
+      <option value="Ab">A flat</option>
+      <option value="Db">D flat</option>
+      <option value="Gb">G flat</option>
+      <option value="Cb">C flat</option>
+      <option value="G">G</option>
+      <option value="D">D</option>
+      <option value="A">A</option>
+      <option value="E">E</option>
+      <option value="B">B</option>
+      <option value="F#">F sharp</option>
+      <option value="C#">C sharp</option>
+    </select>
     
+    <form id = "majorMinor">
+      <label>Pick one:</label>
+      <input type="radio" name="choice" value="major" /> Major
+      <input type="radio" name="choice" value="minor" /> Minor
+    </form>
+
     <div id="sketch-holder">
       <!-- Our sketch will go here! -->
     </div>
