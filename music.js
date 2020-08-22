@@ -1,5 +1,26 @@
 /* global music_rnn Tone Nexus core*/
 
+// Determine the key
+function readKey() {
+  var e = document.getElementById("keys");
+  var key = e.options[e.selectedIndex].value;
+  console.log(key);
+}
+
+function readMajorMinor() {
+  var radios = document.getElementsByName("choice");
+
+  for (var i = 0, length = radios.length; i < length; i++) {
+    if (radios[i].checked) {
+      // do whatever you want with the checked radio
+      console.log(radios[i].value);
+
+      // only one radio can be logically checked, don't check the rest
+      break;
+    }
+  }
+}
+
 // create an instrument for the melody
 let leadSampler = new Tone.Sampler({
   urls: {
@@ -12,7 +33,7 @@ let leadSampler = new Tone.Sampler({
 // Patterns
 
 let leadPattern = [];
-let numNotes = leadPattern.length; 
+let numNotes = leadPattern.length;
 
 let leadPart = new Tone.Part((time, note) => {
   leadSampler.triggerAttackRelease(note, "2n", time);
@@ -21,9 +42,9 @@ leadPart.loop = true;
 leadPart.loopStart = 0;
 leadPart.loopEnd = "2m";
 
-Tone.Transport.scheduleRepeat((time) => {
-	// use the callback time to schedule events
-	generateMusic(); 
+Tone.Transport.scheduleRepeat(time => {
+  // use the callback time to schedule events
+  generateMusic();
 }, "2m");
 
 // Interactions
@@ -32,8 +53,8 @@ Tone.Transport.scheduleRepeat((time) => {
 document.getElementById("start").onclick = async () => {
   console.log("button clicked");
   await Tone.start();
-  // start the loop 
-  generateMusic(); 
+  // start the loop
+  generateMusic();
   Tone.Transport.start();
 };
 
@@ -78,7 +99,6 @@ sequencer.on("change", ({ column, row, state }) => {
     leadPart.remove(time, note);
   }
 });
-
 
 // Magenta stuff
 
@@ -131,4 +151,3 @@ async function generateMusic() {
     }
   }
 }
-
