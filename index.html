@@ -36,7 +36,7 @@
 
     <label for="keys">Choose a key:</label>
 
-    <select name="keys" id="keys">
+    <select name="keys" id="keys" onchange="readKey()">
       <option value="C">C</option>
       <option value="F">F</option>
       <option value="Bb">B flat</option>
@@ -54,9 +54,9 @@
       <option value="C#">C sharp</option>
     </select>
     
-    <form id = "majorMinor">
+    <form id = "majorMinor" onclick="readMajorMinor()">
       <label>Pick one:</label>
-      <input type="radio" name="choice" value="major" /> Major
+      <input type="radio" name="choice" value="major" checked = "checked"/> Major
       <input type="radio" name="choice" value="minor" /> Minor
     </form>
 
