@@ -66,7 +66,7 @@ let leadSampler = new Tone.Sampler({
   },
   volume: -8
 }).toDestination();
-// leadSampler.debug = true; 
+// leadSampler.debug = true;
 
 // Patterns
 
@@ -103,66 +103,6 @@ document.getElementById("stop").onclick = async () => {
   // stop the loop
   Tone.Transport.stop();
 };
-
-// The sequencer is going to help build the melody
-let sequencer = new Nexus.Sequencer("#sequencer", {
-  columns: 32,
-  rows: 12,
-  size: [550, 200]
-});
-
-new Tone.Loop(time => {
-  // Use the draw schedule to make sure the visualization matches up with the audio
-  Tone.Draw.schedule(() => sequencer.next(), time);
-}, "16n").start();
-let sequencerRows = [
-  "B3",
-  "G#3",
-  "E3",
-  "C#3",
-  "B2",
-  "G#2",
-  "E2",
-  "C#2",
-  "B1",
-  "G#1",
-  "E1",
-  "C#1"
-];
-sequencer.on("change", ({ column, row, state }) => {
-  let time = { "16n": column };
-  let note = sequencerRows[row];
-  if (state) {
-    leadPart.add(time, note);
-  } else {
-    leadPart.remove(time, note);
-  }
-});
-
-let xPattern = [];
-// let xPattern = [
-//   ["0:0:0", "C3"],
-//   ["1:0:0", "D3"],
-//   ["0:0:0", "C3"],
-//   ["0:1:0", "C3"],
-//   ["0:2:0", "C3"],
-//   ["0:3:0", "E3"],
-//   ["1:0:0", "G3"],
-//   ["1:1:0", "E3"],
-//   ["1:1:2", "A#3"],
-//   ["1:2:0", "C3"],
-//   ["1:2:2", "E3"],
-//   ["1:3:2", "A3"],
-//   ["1:3:3", "A3"]
-// ];
-let xPart = new Tone.Part((time, note) => {
-  leadSampler.triggerAttackRelease(note, "2n", time);
-}, xPattern).start();
-xPart.loop = true;
-xPart.loopStart = 0;
-xPart.loopEnd = "2m";
-
-
 
 // Magenta stuff
 
@@ -205,21 +145,17 @@ async function generateMusic() {
   let combined = core.sequences.concatenate([seed, result]);
   // console.log(combined);
 
-  sequencer.matrix.populate.all([0]);
-  
-  let noteNames = []
-  
-  console.log("generated music")
+  let noteNames = [];
+
+  console.log("generated music");
   for (let note of combined.notes) {
     // console.log(note);
     let noteName = Tone.Frequency(note.pitch, "midi").toNote();
-    
-    noteNames.push(noteName); 
+
+    noteNames.push(noteName);
 
     let column = note.quantizedStartStep;
-    // let time = { "16n": column };
 
-    // ["0:0:0"];
     /* 4 16th notes = 1n
     4n = 1m */
 
@@ -229,36 +165,8 @@ async function generateMusic() {
 
     let time = m + ":" + n + ":" + s;
 
-    // xPattern.push([time, noteName]);
-    // console.log(xPattern);
-    // console.log(numNotes);
-
-    // leadSampler.triggerAttackRelease(noteName, "2n", time).toDestination;
-
-    // Tone.Transport.schedule(time => {
-    //   console.log(noteName)
-    //   console.log(note.quantizedEndStep - note.quantizedStartStep);
-    //   leadSampler
-    //     .triggerAttackRelease(
-    //       noteName,
-    //       "2n",
-    //        note.quantizedStartStep
-    //     )
-    //     .toDestination();
-    // });
-
     leadPart.add(time, noteName);
-    // console.log(leadPart);
-
-    // sequencer
-    // let column = note.quantizedStartStep;
-    // let noteName = Tone.Frequency(note.pitch, "midi").toNote();
-    // let row = sequencerRows.indexOf(noteName);
-    // if (row >= 0) {
-    //   sequencer.matrix.set.cell(column, row, 1);
-    // }
   }
-  
-  console.log(noteNames); 
-}
 
+  console.log(noteNames);
+}
