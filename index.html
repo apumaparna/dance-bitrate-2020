@@ -30,13 +30,14 @@
       stop
     </button>
 
-    <div style="display: none" id="sequencer"></div>
+<!--     style="display: none"  -->
+    <div id="sequencer"></div>
 
     <div></div>
 
     <label for="keys">Choose a key:</label>
 
-    <select name="keys" id="keys" onchange="readKey()">
+    <select name="keys" id="keys" onchange="key()">
       <option value="C">C</option>
       <option value="F">F</option>
       <option value="Bb">B flat</option>
@@ -54,7 +55,7 @@
       <option value="C#">C sharp</option>
     </select>
     
-    <form id = "majorMinor" onclick="readMajorMinor()">
+    <form id = "majorMinor" onclick="key()">
       <label>Pick one:</label>
       <input type="radio" name="choice" value="major" checked = "checked"/> Major
       <input type="radio" name="choice" value="minor" /> Minor

@@ -1,10 +1,19 @@
 /* global music_rnn Tone Nexus core*/
 
+// Tone.Transport.bpm.value = 220;
+
 // Determine the key
+let songKey = "C";
+let starterNote = "C";
+
+let flag = false;
+
 function readKey() {
   var e = document.getElementById("keys");
   var key = e.options[e.selectedIndex].value;
-  console.log(key);
+  // console.log(key)
+  starterNote = key;
+  return key;
 }
 
 function readMajorMinor() {
@@ -13,12 +22,40 @@ function readMajorMinor() {
   for (var i = 0, length = radios.length; i < length; i++) {
     if (radios[i].checked) {
       // do whatever you want with the checked radio
-      console.log(radios[i].value);
+      if (radios[i].value == "minor") {
+        return "m";
+      } else {
+        return "";
+      }
 
       // only one radio can be logically checked, don't check the rest
       break;
     }
   }
+}
+
+function flatToSharp(note) {
+  switch (note) {
+    case "Bb":
+      return "A#";
+    case "Db":
+      return "C#";
+    case "Eb":
+      return "D#";
+    case "Gb":
+      return "F#";
+    case "Ab":
+      return "G#";
+    default:
+      return note;
+  }
+}
+
+function key() {
+  songKey = flatToSharp(readKey()) + readMajorMinor();
+  console.log(songKey);
+  console.log(starterNote);
+  console.log(songKey + "7");
 }
 
 // create an instrument for the melody
@@ -29,6 +66,7 @@ let leadSampler = new Tone.Sampler({
   },
   volume: -8
 }).toDestination();
+// leadSampler.debug = true; 
 
 // Patterns
 
@@ -44,6 +82,7 @@ leadPart.loopEnd = "2m";
 
 Tone.Transport.scheduleRepeat(time => {
   // use the callback time to schedule events
+  console.log("repeat");
   generateMusic();
 }, "2m");
 
@@ -100,6 +139,31 @@ sequencer.on("change", ({ column, row, state }) => {
   }
 });
 
+let xPattern = [];
+// let xPattern = [
+//   ["0:0:0", "C3"],
+//   ["1:0:0", "D3"],
+//   ["0:0:0", "C3"],
+//   ["0:1:0", "C3"],
+//   ["0:2:0", "C3"],
+//   ["0:3:0", "E3"],
+//   ["1:0:0", "G3"],
+//   ["1:1:0", "E3"],
+//   ["1:1:2", "A#3"],
+//   ["1:2:0", "C3"],
+//   ["1:2:2", "E3"],
+//   ["1:3:2", "A3"],
+//   ["1:3:3", "A3"]
+// ];
+let xPart = new Tone.Part((time, note) => {
+  leadSampler.triggerAttackRelease(note, "2n", time);
+}, xPattern).start();
+xPart.loop = true;
+xPart.loopStart = 0;
+xPart.loopEnd = "2m";
+
+
+
 // Magenta stuff
 
 //load magenta
@@ -115,7 +179,7 @@ async function generateMusic() {
   let seed = {
     notes: [
       {
-        pitch: Tone.Frequency("C#3").toMidi(),
+        pitch: Tone.Frequency(starterNote + "3").toMidi(),
         quantizedStartStep: 0,
         quantizedEndStep: 4
       }
@@ -128,7 +192,7 @@ async function generateMusic() {
 
   let temperature = 1.2;
 
-  let chordProgression = ["C#m7"];
+  let chordProgression = [songKey + "7"];
 
   let result = await melodyRNN.continueSequence(
     seed,
@@ -136,18 +200,65 @@ async function generateMusic() {
     temperature,
     chordProgression
   );
-  console.log(result);
+  // console.log(result);
 
   let combined = core.sequences.concatenate([seed, result]);
-  console.log(combined);
+  // console.log(combined);
 
   sequencer.matrix.populate.all([0]);
+  
+  let noteNames = []
+  
+  console.log("generated music")
   for (let note of combined.notes) {
-    let column = note.quantizedStartStep;
+    // console.log(note);
     let noteName = Tone.Frequency(note.pitch, "midi").toNote();
-    let row = sequencerRows.indexOf(noteName);
-    if (row >= 0) {
-      sequencer.matrix.set.cell(column, row, 1);
-    }
+    
+    noteNames.push(noteName); 
+
+    let column = note.quantizedStartStep;
+    // let time = { "16n": column };
+
+    // ["0:0:0"];
+    /* 4 16th notes = 1n
+    4n = 1m */
+
+    let m = Math.floor(column / 16).toString();
+    let n = Math.floor((column % 16) / 4).toString();
+    let s = Math.floor((column % 16) % 4).toString();
+
+    let time = m + ":" + n + ":" + s;
+
+    // xPattern.push([time, noteName]);
+    // console.log(xPattern);
+    // console.log(numNotes);
+
+    // leadSampler.triggerAttackRelease(noteName, "2n", time).toDestination;
+
+    // Tone.Transport.schedule(time => {
+    //   console.log(noteName)
+    //   console.log(note.quantizedEndStep - note.quantizedStartStep);
+    //   leadSampler
+    //     .triggerAttackRelease(
+    //       noteName,
+    //       "2n",
+    //        note.quantizedStartStep
+    //     )
+    //     .toDestination();
+    // });
+
+    leadPart.add(time, noteName);
+    // console.log(leadPart);
+
+    // sequencer
+    // let column = note.quantizedStartStep;
+    // let noteName = Tone.Frequency(note.pitch, "midi").toNote();
+    // let row = sequencerRows.indexOf(noteName);
+    // if (row >= 0) {
+    //   sequencer.matrix.set.cell(column, row, 1);
+    // }
   }
+  
+  console.log(noteNames); 
 }
+
