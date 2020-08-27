@@ -58,6 +58,7 @@ function key() {
   console.log(songKey + "7");
 }
 
+
 // create an instrument for the melody
 let leadSampler = new Tone.Sampler({
   urls: {
@@ -74,6 +75,7 @@ let leadPattern = [];
 let numNotes = leadPattern.length;
 
 let leadPart = new Tone.Part((time, note) => {
+  console.log(note);
   leadSampler.triggerAttackRelease(note, "2n", time);
 }, leadPattern).start();
 leadPart.loop = true;
@@ -89,20 +91,15 @@ Tone.Transport.scheduleRepeat(time => {
 // Interactions
 
 // start click hander
-document.getElementById("start").onclick = async () => {
-  console.log("button clicked");
-  await Tone.start();
-  // start the loop
-  generateMusic();
-  Tone.Transport.start();
-};
+// document.getElementById("start").onclick = async () => {
+//   console.log("button clicked");
+//   // await Tone.start();
+//   console.log("await tone.start")
+//   // start the loop
+//   generateMusic();
+//   Tone.Transport.start();
+// };
 
-// stop click hander
-document.getElementById("stop").onclick = async () => {
-  console.log("button clicked");
-  // stop the loop
-  Tone.Transport.stop();
-};
 
 // Magenta stuff
 
@@ -114,6 +111,7 @@ let melodyRNNLoaded = melodyRNN.initialize();
 
 // Generates a melody
 async function generateMusic() {
+  console.log("generate music")
   await melodyRNNLoaded;
 
   let seed = {
@@ -142,8 +140,10 @@ async function generateMusic() {
   );
   // console.log(result);
 
-  let combined = core.sequences.concatenate([seed, result]);
-  // console.log(combined);
+  console.log(seed);
+  console.log(result);
+  console.log(core.sequences);
+  let combined = result;
 
   let noteNames = [];
 

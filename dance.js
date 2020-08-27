@@ -1,5 +1,6 @@
 /* global ml5 createCanvas createCapture VIDEO width height select image fill noStroke ellipse stroke line
-createImg frameRate noLoop strokeWeight round createVideo loadImage background*/
+createImg frameRate noLoop strokeWeight round createVideo loadImage background Tone generateMusic imageMode CENTER 
+CORNER*/
 
 // Copyright (c) 2018 ml5
 //
@@ -17,107 +18,62 @@ PoseNet example using p5.js
 let poseNet;
 let poses = [];
 
-let poseList = [];
+let video, videoCopy;
 
-let playRound = 0;
-
-let video;
 var videoIsPlaying;
 
 function setup() {
-  videoIsPlaying = true;
-  createCanvas(1080, 1920);
+  videoIsPlaying = false;
+  createCanvas(500, 500); 
+  // createCanvas(1080/3, 1920/3);
   video = createVideo(
-    "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FThattadavu%20%231_Trim.mp4?v=1598376217969",
-    vidLoad
+    "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FThattadavu%20%231_Trim.mp4?v=1598376217969"
   );
-  video.size(width, height);
-  // video.noLoop();
-  console.log("got video");
+  video.size(1080/3, 1920/3);
+  video.volume(0);
 
   // Create a new poseNet method with a single detection
   poseNet = ml5.poseNet(video, modelReady);
-  console.log("defined poseNet");
 
   // This sets up an event that fills the global variable "poses"
   // with an array every time new poses are detected
   poseNet.on("pose", function(results) {
-    // if (!(Array.isArray(results) && results.length)) {
     poses = results;
-    // }
-    // console.log(results);
   });
-  console.log("filled array with poses");
   // Hide the video element, and just show the canvas
   video.hide();
-
-  // video.onended(async function(stopVideo) {
-  //   console.log("video over");
-  //   poses = [];
-  //   console.log(poses);
-  // });
-
-  // console.log(poses);
 }
-
-// async function(stopVid) {
-
-// }
 
 function modelReady() {
   select("#status").html("Model Loaded");
 }
 
-// function mousePressed() {
-//   vidLoad();
-// }
-
 function draw() {
-  console.log("draw");
-  background(255);
-  // console.log("playRound");
-  // console.log(playRound);
-  console.log(videoIsPlaying);
-  // image(video, 0, 0, width, height);
+  background(0);
+  
+  // imageMode(CENTER);
+  video.size(1080, 1920);
+  // image(video, width/2, height/2, 1080/3, 1920/3);
+  image(video, 0, 0, 1080/3, 1920/3);
+  video.size(1080/3, 1920/3);
+  
+  // imageMode(CORNER);
 
-  // console.log(poses);
-
-  // We can call both functions to draw all keypoints and the skeletons
-  // if (videoIsPlaying == true) {
-  // if (videoIsPlaying) {
   drawKeypoints();
   drawSkeleton();
-  // } else {
-  // poseNet.off("pose", results => {
-  // do something with the results
-
-  // console.log(results);
-  // noLoop();
-  // throw "game over";
-  // });
-  // }
-  // }
-
-  console.log(poseList);
 }
 
 // A function to draw ellipses over the detected keypoints
 function drawKeypoints() {
-  console.log("drawKeypoints");
   // Loop through all the poses detected
-  // console.log(poses);
   for (let i = 0; i < poses.length; i++) {
     // For each pose detected, loop through all the keypoints
     let pose = poses[i].pose;
-    console.log(pose);
-    poseList.push(pose);
     for (let j = 0; j < pose.keypoints.length; j++) {
       // A keypoint is an object describing a body part (like rightArm or leftShoulder)
       let keypoint = pose.keypoints[j];
       // Only draw an ellipse is the pose probability is bigger than 0.2
       if (keypoint.score > 0.2) {
-        // console.log(keypoint.position.x);
-        // console.log(keypoint.position.y);
         noStroke();
         fill(255, 0, 0);
         ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
@@ -128,7 +84,6 @@ function drawKeypoints() {
 
 // A function to draw the skeletons
 function drawSkeleton() {
-  console.log("drawSkeleton");
   // Loop through all the skeletons detected
   for (let i = 0; i < poses.length; i++) {
     let skeleton = poses[i].skeleton;
@@ -151,18 +106,25 @@ function drawSkeleton() {
 function vidLoad() {
   console.log("vidLoad");
   video.stop();
+  video.loop();
   videoIsPlaying = true;
-  video.play();
-  // videoIsPlaying = false;
-  // window.stop();
 }
 
-// function keyPressed() {
-//   if (videoIsPlaying) {
-//     video.pause();
-//     videoIsPlaying = false;
-//   } else {
-//     video.loop();
-//     videoIsPlaying = true;
-//   }
-// }
+document.getElementById("stop").onclick = async () => {
+  console.log("button");
+  // stop the loop
+  videoIsPlaying = false;
+  video.stop();
+  console.log("video stop line has been played");
+  Tone.Transport.stop();
+};
+
+document.getElementById("start").onclick = async () => {
+  console.log("button");
+  await Tone.start();
+  generateMusic();
+  vidLoad();
+  Tone.Transport.start();
+};
+
+
