@@ -88,18 +88,6 @@ Tone.Transport.scheduleRepeat(time => {
   generateMusic();
 }, "2m");
 
-// Interactions
-
-// start click hander
-// document.getElementById("start").onclick = async () => {
-//   console.log("button clicked");
-//   // await Tone.start();
-//   console.log("await tone.start")
-//   // start the loop
-//   generateMusic();
-//   Tone.Transport.start();
-// };
-
 
 // Magenta stuff
 
