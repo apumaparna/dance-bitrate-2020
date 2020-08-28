@@ -62,10 +62,10 @@ function key() {
 // create an instrument for the melody
 let leadSampler = new Tone.Sampler({
   urls: {
-    C2:
-      "https://cdn.glitch.com/207f429b-3476-40eb-a33a-05bb64ff9656%2F521905__tarane468__12-haugharp-c4.wav?v=1596912821837"
+    A5:
+      "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F373750__samulis__solo-violin-vibrato-sustain-a5-llvln-arcovib-a5-p.wav?v=1598579480147"
   },
-  volume: -8
+  volume: +12
 }).toDestination();
 // leadSampler.debug = true;
 
@@ -118,7 +118,7 @@ async function generateMusic() {
 
   let temperature = 1.2;
 
-  let chordProgression = [songKey + "7"];
+  let chordProgression = [songKey];
 
   let result = await melodyRNN.continueSequence(
     seed,
