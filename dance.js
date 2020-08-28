@@ -1,6 +1,6 @@
 /* global ml5 createCanvas createCapture VIDEO width height select image fill noStroke ellipse stroke line
 createImg frameRate noLoop strokeWeight round createVideo loadImage background Tone generateMusic imageMode CENTER 
-CORNER translate*/
+CORNER translate grooveDrums*/
 
 // Copyright (c) 2018 ml5
 //
@@ -124,6 +124,7 @@ document.getElementById("start").onclick = async () => {
   await Tone.start();
   vidLoad();
   generateMusic();
+  grooveDrums(); 
   Tone.Transport.start();
 };
 
