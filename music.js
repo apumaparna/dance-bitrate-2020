@@ -61,39 +61,39 @@ function key() {
 // drum instruments
 let players = new Tone.Players({
   kick: "https://teropa.info/ext-assets/drumkit/kick.mp3",
-  hatClosed: "https://teropa.info/ext-assets/drumkit/hatClosed.mp3",
-  hatOpen: "https://teropa.info/ext-assets/drumkit/hatOpen2.mp3",
-  snare: "https://teropa.info/ext-assets/drumkit/snare3.mp3",
+  // hatClosed: "https://teropa.info/ext-assets/drumkit/hatClosed.mp3",
+  // hatOpen: "https://teropa.info/ext-assets/drumkit/hatOpen2.mp3",
+  // snare: "https://teropa.info/ext-assets/drumkit/snare3.mp3",
   tomLow: "https://teropa.info/ext-assets/drumkit/tomLow.mp3",
   tomMid: "https://teropa.info/ext-assets/drumkit/tomMid.mp3",
   tomHigh: "https://teropa.info/ext-assets/drumkit/tomHigh.mp3",
-  ride: "https://teropa.info/ext-assets/drumkit/ride.mp3",
-  crash: "https://teropa.info/ext-assets/drumkit/hatOpen.mp3"
+  // ride: "https://teropa.info/ext-assets/drumkit/ride.mp3",
+  // crash: "https://teropa.info/ext-assets/drumkit/hatOpen.mp3"
 }).toDestination();
 
 let midiToDrum = new Map([
   [36, "kick"],
-  [37, "snare"],
-  [38, "snare"],
-  [40, "snare"],
-  [42, "hatClosed"],
-  [22, "hatClosed"],
-  [44, "hatClosed"],
-  [46, "hatOpen"],
-  [26, "hatOpen"],
+  // [37, "snare"],
+  // [38, "snare"],
+  // [40, "snare"],
+  // [42, "hatClosed"],
+  // [22, "hatClosed"],
+  // [44, "hatClosed"],
+  // [46, "hatOpen"],
+  // [26, "hatOpen"],
   [43, "tomLow"],
   [58, "tomLow"],
   [47, "tomMid"],
   [45, "tomMid"],
   [50, "tomHigh"],
   [48, "tomHigh"],
-  [49, "crash"],
-  [52, "crash"],
-  [55, "crash"],
-  [57, "crash"],
-  [51, "ride"],
-  [53, "ride"],
-  [59, "ride"]
+  // [49, "crash"],
+  // [52, "crash"],
+  // [55, "crash"],
+  // [57, "crash"],
+  // [51, "ride"],
+  // [53, "ride"],
+  // [59, "ride"]
 ]);
 let drumToMidi = new Map([...midiToDrum].map(e => e.reverse()));
 
@@ -119,19 +119,33 @@ leadPart.loop = true;
 leadPart.loopStart = 0;
 leadPart.loopEnd = "2m";
 
+// let drumBeat = [
+//   ["0:0:0", "tomLow"],
+//   ["0:1:0", "tomHigh"],
+//   ["0:1:2", "tomLow"],
+//   ["0:2:0", "tomLow"],
+//   ["0:3:0", "tomHigh"],
+//   ["1:0:0", "tomLow"],
+//   ["1:1:0", "tomHigh"],
+//   ["1:2:0", "tomLow"],
+//   ["1:2:3", "tomLow"],
+//   ["1:3:0", "tomHigh"],
+//   ["1:3:2", "tomLow"],
+//   ["1:3:2", "tomMid"]
+// ];
+
 let drumBeat = [
-  ["0:0:0", "kick"],
-  ["0:1:0", "hatClosed"],
-  ["0:1:2", "kick"],
-  ["0:2:0", "kick"],
-  ["0:3:0", "hatClosed"],
-  ["1:0:0", "kick"],
-  ["1:1:0", "hatClosed"],
-  ["1:2:0", "kick"],
-  ["1:2:3", "kick"],
-  ["1:3:0", "hatClosed"],
-  ["1:3:2", "kick"],
-  ["1:3:2", "hatOpen"]
+  ["0:0:0", "tomLow"],
+  ["0:0:2", "tomHigh"],
+  ["0:0:3", "tomLow"],
+  ["0:1:0", "tomLow"],
+  ["0:1:2", "tomHigh"],
+  ["0:2:0", "tomLow"],
+  ["0:2:2", "tomHigh"],
+  ["0:3:0", "tomLow"],
+  ["0:3:2", "tomHigh"],
+  ["0:3:3", "tomLow"],
+  ["0:3:4", "tomMid"]
 ];
 
 let drumPart = new Tone.Part((time, drum) => {
@@ -141,7 +155,7 @@ let drumPart = new Tone.Part((time, drum) => {
 // have to manually loop for parts
 drumPart.loop = true;
 drumPart.loopStart = 0;
-drumPart.loopEnd = "2m";
+drumPart.loopEnd = "1m";
 
 Tone.Transport.scheduleRepeat(time => {
   // use the callback time to schedule events
@@ -243,7 +257,7 @@ async function grooveDrums() {
   let z = await grooVae.encode([original]);
   let result = await grooVae.decode(
     z,
-    1.4,
+    0.6,
     undefined,
     4,
     Tone.Transport.bpm.value

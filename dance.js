@@ -124,7 +124,7 @@ document.getElementById("start").onclick = async () => {
   await Tone.start();
   vidLoad();
   generateMusic();
-  grooveDrums(); 
+  // grooveDrums(); 
   Tone.Transport.start();
 };
 
