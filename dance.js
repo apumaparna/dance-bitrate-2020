@@ -1,6 +1,6 @@
 /* global ml5 createCanvas createCapture VIDEO width height select image fill noStroke ellipse stroke line
 createImg frameRate noLoop strokeWeight round createVideo loadImage background Tone generateMusic imageMode CENTER 
-CORNER*/
+CORNER translate*/
 
 // Copyright (c) 2018 ml5
 //
@@ -51,14 +51,14 @@ function modelReady() {
 function draw() {
   background(0);
   
-  // imageMode(CENTER);
+  imageMode(CENTER);
   video.size(1080, 1920);
   // image(video, width/2, height/2, 1080/3, 1920/3);
-  image(video, 0, 0, 1080/3, 1920/3);
   video.size(1080/3, 1920/3);
   
-  // imageMode(CORNER);
-
+  imageMode(CORNER);
+  
+  translate((width-1080/3)/2, (height-1920/3)/2); 
   drawKeypoints();
   drawSkeleton();
 }
@@ -122,8 +122,8 @@ document.getElementById("stop").onclick = async () => {
 document.getElementById("start").onclick = async () => {
   console.log("button");
   await Tone.start();
-  generateMusic();
   vidLoad();
+  generateMusic();
   Tone.Transport.start();
 };
 
