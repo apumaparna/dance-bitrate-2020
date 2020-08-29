@@ -66,7 +66,7 @@ let players = new Tone.Players({
   // snare: "https://teropa.info/ext-assets/drumkit/snare3.mp3",
   tomLow: "https://teropa.info/ext-assets/drumkit/tomLow.mp3",
   tomMid: "https://teropa.info/ext-assets/drumkit/tomMid.mp3",
-  tomHigh: "https://teropa.info/ext-assets/drumkit/tomHigh.mp3",
+  tomHigh: "https://teropa.info/ext-assets/drumkit/tomHigh.mp3"
   // ride: "https://teropa.info/ext-assets/drumkit/ride.mp3",
   // crash: "https://teropa.info/ext-assets/drumkit/hatOpen.mp3"
 }).toDestination();
@@ -86,7 +86,7 @@ let midiToDrum = new Map([
   [47, "tomMid"],
   [45, "tomMid"],
   [50, "tomHigh"],
-  [48, "tomHigh"],
+  [48, "tomHigh"]
   // [49, "crash"],
   // [52, "crash"],
   // [55, "crash"],
@@ -100,10 +100,13 @@ let drumToMidi = new Map([...midiToDrum].map(e => e.reverse()));
 // create an instrument for the melody
 let leadSampler = new Tone.Sampler({
   urls: {
-    A5:
-      "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F373750__samulis__solo-violin-vibrato-sustain-a5-llvln-arcovib-a5-p.wav?v=1598579480147"
+    E4:
+      "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F230670__akshaylaya__tha-e-122.wav?v=1598645852409",
+    // E3:
+      // "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F231123__akshaylaya__thom-e-020.wav?v=1598645905841", 
+    // B3: "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F224171__akshaylaya__dheem-b-080.wav?v=1598645899647"
   },
-  volume: +12
+  volume: 4
 }).toDestination();
 // leadSampler.debug = true;
 
@@ -148,21 +151,20 @@ let drumBeat = [
   ["0:3:4", "tomMid"]
 ];
 
-let drumPart = new Tone.Part((time, drum) => {
-  players.player(drum).start(time);
-  console.log("started sound");
-}, drumBeat).start();
-// have to manually loop for parts
-drumPart.loop = true;
-drumPart.loopStart = 0;
-drumPart.loopEnd = "1m";
+// let drumPart = new Tone.Part((time, drum) => {
+//   players.player(drum).start(time);
+//   console.log("started sound");
+// }, drumBeat).start();
+// // have to manually loop for parts
+// drumPart.loop = true;
+// drumPart.loopStart = 0;
+// drumPart.loopEnd = "1m";
 
 Tone.Transport.scheduleRepeat(time => {
   // use the callback time to schedule events
   console.log("repeat");
   generateMusic();
 }, "2m");
-
 
 // Magenta stuff
 
@@ -174,7 +176,7 @@ let melodyRNNLoaded = melodyRNN.initialize();
 
 // Generates a melody
 async function generateMusic() {
-  console.log("generate music")
+  console.log("generate music");
   await melodyRNNLoaded;
 
   let seed = {
@@ -234,7 +236,6 @@ async function generateMusic() {
   console.log(noteNames);
 }
 
-
 let grooVae = new music_vae.MusicVAE(
   "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/groovae_2bar_humanize"
 );
@@ -269,5 +270,4 @@ async function grooveDrums() {
   }
 
   console.log(result);
-};
-
+}
