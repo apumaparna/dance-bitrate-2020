@@ -19,81 +19,57 @@ PoseNet example using p5.js
 let poses = [];
 
 let video;
-let currentClass; 
-
-// var videoIsPlaying;
+let currentClass;
 
 let vidList = [
   "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FThattadavu%20%231_Trim.mp4?v=1598376217969",
   "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FEttu%20Adavu%20%231_Trim.mp4?v=1598650839527",
-  "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FMandi%20Adavu%20%2309_Trim.mp4?v=1598651232743"
+  "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FMandi%20Adavu%20%2309_Trim.mp4?v=1598651232743",
+  "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FTeermana%20Adavu%20(Alapadma)%20%235_Trim.mp4?v=1598721946974",
+  "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FPakk%20Adavu%20%233_Trim.mp4?v=1598721957764",
+  "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FNattadavu%20%238_Trim.mp4?v=1598721958503",
+  "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FKudita%20mettu%20adavu%20%234_Trim.mp4?v=1598721962747",
+  "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FJarkadavu%20%233_Trim.mp4?v=1598721971451"
 ];
 
-let classList = []; 
-
-// let go = true;
-
-// let callback = function(results) {
-//   // if (go) {
-//   poses = results;
-// };
-
-// function vidPoseSetup(vid) {
-//   video = createVideo(vid); 
-//   console.log("created video");
-//   video.size(1080 / 3, 1920 / 3);
-//   video.volume(0);
-
-//   // Create a new poseNet method with a single detection
-//   poseNet = ml5.poseNet(video, modelReady);
-
-//   // This sets up an event that fills the global variable "poses"
-//   // with an array every time new poses are detected
-//   poseNet.on("pose", callback);
-
-//   // Hide the video element, and just show the canvas
-//   video.hide();
-// }
+let classList = [];
 
 function setup() {
   createCanvas(500, 500);
-  
+  background(0);
+
   for (let i = 0; i < vidList.length; i++) {
-    classList.push(new DanceNet(vidList[i])); 
+    classList.push(new DanceNet(vidList[i]));
   }
-  
-  console.log(classList); 
-  
+
+  console.log(classList);
+
   currentClass = classList[0];
-  console.log(currentClass); 
-  video = currentClass.video; 
-  modelReady(); 
+  console.log(currentClass);
+  video = currentClass.video;
+  modelReady();
   currentClass.poseNet.on("pose", callback);
 }
 
- function callback(results) {
-    // console.log(results);
-    poses = results;
-    // console.log(this.poses);
-  }
+function callback(results) {
+  poses = results;
+}
 
 function modelReady() {
-  let ready = true; 
-   
+  let ready = true;
+
   for (let i = 0; i < classList.length; i++) {
-    ready = ready && classList[i].getReady(); 
+    ready = ready && classList[i].getReady();
   }
-  
-  if (ready){
+
+  if (ready) {
     select("#status").html("Model Loaded");
   }
 }
 
 function draw() {
   background(0);
-  
-  console.log(currentClass); 
-  
+
   imageMode(CENTER);
   video.size(1080, 1920);
   image(video, width / 2, height / 2, 1080 / 3, 1920 / 3);
@@ -104,69 +80,18 @@ function draw() {
   translate((width - 1080 / 3) / 2, (height - 1920 / 3) / 2);
   currentClass.drawKeypoints(poses);
   currentClass.drawSkeleton(poses);
-  
-  // currentClass.draw(); 
 
   video.onended(function(nextVideo) {
     console.log("onended function called");
     currentClass.poseNet.removeListener("pose", callback);
-    // throw "game over!";
-    // go = false;
-    
-    currentClass = random(classList); 
-    video = currentClass.video; 
-    
+
+    currentClass = random(classList);
+    video = currentClass.video;
+
     currentClass.poseNet.on("pose", callback);
     currentClass.vidLoad();
   });
 }
-
-// // A function to draw ellipses over the detected keypoints
-// function drawKeypoints() {
-//   // Loop through all the poses detected
-//   for (let i = 0; i < poses.length; i++) {
-//     // For each pose detected, loop through all the keypoints
-//     let pose = poses[i].pose;
-//     for (let j = 0; j < pose.keypoints.length; j++) {
-//       // A keypoint is an object describing a body part (like rightArm or leftShoulder)
-//       let keypoint = pose.keypoints[j];
-//       // Only draw an ellipse is the pose probability is bigger than 0.2
-//       if (keypoint.score > 0.2) {
-//         noStroke();
-//         fill(255, 0, 0);
-//         ellipse(keypoint.position.x, keypoint.position.y, 10, 10);
-//       }
-//     }
-//   }
-// }
-
-// // A function to draw the skeletons
-// function drawSkeleton() {
-//   // Loop through all the skeletons detected
-//   for (let i = 0; i < poses.length; i++) {
-//     let skeleton = poses[i].skeleton;
-//     // For every skeleton, loop through all body connections
-//     for (let j = 0; j < skeleton.length; j++) {
-//       let partA = skeleton[j][0];
-//       let partB = skeleton[j][1];
-//       stroke(255, 0, 0);
-//       line(
-//         partA.position.x,
-//         partA.position.y,
-//         partB.position.x,
-//         partB.position.y
-//       );
-//     }
-//   }
-// }
-
-// // This function is called when the video loads
-// function vidLoad() {
-//   console.log("vidLoad");
-//   video.stop();
-//   video.play();
-//   videoIsPlaying = true;
-// }
 
 document.getElementById("stop").onclick = async () => {
   console.log("button");

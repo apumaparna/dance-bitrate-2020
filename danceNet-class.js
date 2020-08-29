@@ -13,42 +13,22 @@ class DanceNet {
 
     // Create a new poseNet method with a single detection
     this.poseNet = ml5.poseNet(this.video);
+
     this.ready = true;
     console.log(this.ready);
-    // This sets up an event that fills the global variable "poses"
-    // with an array every time new poses are detected
-    // this.poseNet.on("pose", this.callback);
-    // this.poseNet.on("pose", this.callback);
+
     // Hide the video element, and just show the canvas
     this.video.hide();
   }
-
-  // callback(results) {
-  //   // console.log(results);
-  //   this.poses = results;
-  //   // console.log(this.poses);
-  // }
-
-  // modelReady() {
-  //   console.log("ready");
-  //   // this.ready = true;
-  // }
 
   getReady() {
     return this.ready;
   }
 
-  getPoses() {
-    console.log("getPoses");
-    console.log(this.poses);
-    return this.poses;
-  }
-
   // A function to draw ellipses over the detected keypoints
   drawKeypoints(poses) {
-    console.log("drawKeypoints");
+    // console.log("drawKeypoints");
     // Loop through all the poses detected
-    console.log(poses);
     for (let i = 0; i < poses.length; i++) {
       // For each pose detected, loop through all the keypoints
       let pose = poses[i].pose;
@@ -67,7 +47,7 @@ class DanceNet {
 
   // A function to draw the skeletons
   drawSkeleton(poses) {
-    console.log("drawSkel");
+    // console.log("drawSkel");
     // Loop through all the skeletons detected
     for (let i = 0; i < poses.length; i++) {
       let skeleton = poses[i].skeleton;
@@ -85,20 +65,6 @@ class DanceNet {
       }
     }
   }
-
-  //   draw() {
-  //     imageMode(CENTER);
-  //     this.video.size(1080, 1920);
-  //     image(this.video, width / 2, height / 2, 1080 / 3, 1920 / 3);
-  //     this.video.size(1080 / 3, 1920 / 3);
-
-  //     imageMode(CORNER);
-
-  //     translate((width - 1080 / 3) / 2, (height - 1920 / 3) / 2);
-  //     this.drawKeypoints();
-  //     this.drawSkeleton();
-
-  //   }
 
   // This function is called when the video loads
   vidLoad() {

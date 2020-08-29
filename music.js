@@ -106,7 +106,7 @@ let leadSampler = new Tone.Sampler({
       // "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F231123__akshaylaya__thom-e-020.wav?v=1598645905841", 
     // B3: "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F224171__akshaylaya__dheem-b-080.wav?v=1598645899647"
   },
-  volume: 4
+  volume: 2
 }).toDestination();
 // leadSampler.debug = true;
 
