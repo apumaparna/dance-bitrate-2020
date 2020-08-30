@@ -32,21 +32,92 @@
     <!--     </script> -->
 
     <!-- import the webpage's javascript file -->
-<!--     <script src="/dance.js" defer></script>
-    <script src="/danceNet-class.js" defer></script> -->
+    <script src="/dance.js" defer></script>
+    <script src="/danceNet-class.js" defer></script>
     <script src="/music.js" defer></script>
-        <script src="/bodypix1.js" defer></script>
+    <!--         <script src="/bodypix1.js" defer></script> -->
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato&family=Lexend+Peta&family=Montserrat&family=Roboto+Slab&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <button id="start">
-      start
-    </button>
+    <h1>Bharata Natyam</h1>
 
-    <button id="stop">
-      stop
-    </button>
+    <p>
+      Bharatanatyam is a type of classical Indian dance. It is the oldest of
+      these art forms and is still widely practiced today. In the times of
+      ancient India, dance and music were a vital part of theater works. As a
+      result, the word "natya" means both "dance" and "drama." Similarly,
+      bharatanatyam includes both pure dance and expressive story-telling. There
+      are two divisions of bharatanatyam:
+    </p>
+<!--     <ul>
+      <li>
+        <h4>
+          Nritta
+        </h4>
+        <p>
+          Nritta is pure, abstract dance full of stylized movements and poses.
+          This division of dance has no meaning or dramatic content.
+        </p>
+      </li>
 
-    <label for="keys">Choose a key:</label>
+      <li>
+        <h4>
+          Nritya
+        </h4>
+        <p>
+          Nritya is the suggestive, interpretive, and expressive portion of
+          Bharathanatyam. In nritya, all gestures and movements have a meaning.
+        </p>
+      </li>
+    </ul> -->
+
+    <p>
+      The goal of this project is to show bharatantyam steps (<i>nritta</i>) in
+      a fun and interesting way. The music is AI-generated and the dancer
+      follows the music. The user may view the dancer's motions with PoseNet to
+      study the pose or with BodyPix to study the body parts. Both PoseNet and
+      BodyPix are from ml5.js. The music is generated using Magenta.js and is
+      powered using Tone.js.
+    </p>
+ 
+    <div class="text-container">
+      <div class="center">
+        <h5>
+          Scroll down to get started!
+        </h5>
+      </div>
+    </div>
+  
+
+    <div class="button-container">
+      <div class="center">
+        <button id="start">
+          start
+        </button>
+
+        <button id="stop">
+          stop
+        </button>
+      </div>
+    </div>
+
+    <h2>
+      Option menu
+    </h2>
+
+    <h3>
+      Music
+    </h3>
+
+    <p>
+      Change the key of the music using the controls below. Default is C major.
+    </p>
+
+    <label for="keys"> Choose a key:</label>
 
     <select name="keys" id="keys" onchange="key()">
       <option value="C">C</option>
@@ -72,29 +143,12 @@
       <input type="radio" name="choice" value="minor" /> Minor
     </form>
 
-    <!--     <div id="sketch-holder"> -->
-    <!-- Our sketch will go here! -->
-    <!--     </div> -->
+    <h3>
+      Visualization
+    </h3>
 
-    <!--         <img
-      id="cat"
-      src="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F01-cat-stretching-feet.gif?v=1598226478702"
-      crossorigin="anonymous"
-    /> -->
+    <p id="status"><b> Loading model... </b></p>
 
-    <h1>title goes here</h1>
-    <p id="status">Loading model...</p>
-
-    <!--     <video
-      controls="controls"
-      width="800"
-      height="600"
-      name="Video Name"
-      src="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FMandi%20Adavu%20%2309_Trim.mp4?v=1598651232743"
-    ></video> -->
-    <!--     <video>
-      <source src="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FIMG-0429.MOV?v=1598319938248" type = "video/MOV">
-    </video> -->
-    <!--     <img src="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F01-cat-stretching-feet.gif?v=1598226478702" id="cat-stretching" > -->
+    <div id="p5sketch"></div>
   </body>
 </html>
