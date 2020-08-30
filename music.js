@@ -101,9 +101,9 @@ let drumToMidi = new Map([...midiToDrum].map(e => e.reverse()));
 let leadSampler = new Tone.Sampler({
   urls: {
     E4:
-      "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F230670__akshaylaya__tha-e-122.wav?v=1598645852409",
+      "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F230670__akshaylaya__tha-e-122.wav?v=1598645852409"
     // E3:
-      // "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F231123__akshaylaya__thom-e-020.wav?v=1598645905841", 
+    // "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F231123__akshaylaya__thom-e-020.wav?v=1598645905841",
     // B3: "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F224171__akshaylaya__dheem-b-080.wav?v=1598645899647"
   },
   volume: 2
@@ -236,38 +236,84 @@ async function generateMusic() {
   console.log(noteNames);
 }
 
-let grooVae = new music_vae.MusicVAE(
-  "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/groovae_2bar_humanize"
-);
-let grooVaeLoaded = grooVae.initialize();
+// let grooVae = new music_vae.MusicVAE(
+//   "https://storage.googleapis.com/magentadata/js/checkpoints/music_vae/groovae_2bar_humanize"
+// );
+// let grooVaeLoaded = grooVae.initialize();
 
-async function grooveDrums() {
-  await grooVaeLoaded;
+// async function grooveDrums() {
+//   await grooVaeLoaded;
 
-  let sixteenthNoteTicks = Tone.Time("16n").toTicks();
-  let original = {
-    notes: drumBeat.map(([time, drum]) => ({
-      pitch: drumToMidi.get(drum),
-      quantizedStartStep: Tone.Time(time).toTicks() / sixteenthNoteTicks,
-      quantizedEndStep: Tone.Time(time).toTicks() / sixteenthNoteTicks + 1
-    })),
-    totalQuantizedSteps: 32,
-    quantizationInfo: { stepsPerQuarter: 4 }
-  };
+//   let sixteenthNoteTicks = Tone.Time("16n").toTicks();
+//   let original = {
+//     notes: drumBeat.map(([time, drum]) => ({
+//       pitch: drumToMidi.get(drum),
+//       quantizedStartStep: Tone.Time(time).toTicks() / sixteenthNoteTicks,
+//       quantizedEndStep: Tone.Time(time).toTicks() / sixteenthNoteTicks + 1
+//     })),
+//     totalQuantizedSteps: 32,
+//     quantizationInfo: { stepsPerQuarter: 4 }
+//   };
 
-  let z = await grooVae.encode([original]);
-  let result = await grooVae.decode(
-    z,
-    0.6,
-    undefined,
-    4,
-    Tone.Transport.bpm.value
-  );
+//   let z = await grooVae.encode([original]);
+//   let result = await grooVae.decode(
+//     z,
+//     0.6,
+//     undefined,
+//     4,
+//     Tone.Transport.bpm.value
+//   );
 
-  drumPart.clear();
-  for (let note of result[0].notes) {
-    drumPart.at(note.startTime, midiToDrum.get(note.pitch));
+//   drumPart.clear();
+//   for (let note of result[0].notes) {
+//     drumPart.at(note.startTime, midiToDrum.get(note.pitch));
+//   }
+
+//   console.log(result);
+// }
+
+function changeSound() {
+  console.log("sound changed");
+  var e = document.getElementById("sounds");
+  var soundLink = e.options[e.selectedIndex].value;
+  var sound = e.options[e.selectedIndex].label;
+
+  Tone.Transport.stop();
+
+  if (sound == "Mridangam #1 - Tha") {
+    leadSampler = new Tone.Sampler({
+      urls: {
+        E4:
+          'https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F230670__akshaylaya__tha-e-122.wav?v=1598645852409'
+      },
+      volume: 2
+    }).toDestination();
+  } else if (sound == "Mridangam #2 - Thom") {
+    leadSampler = new Tone.Sampler({
+      urls: {
+        E3:
+          'https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F231123__akshaylaya__thom-e-020.wav?v=1598645905841'
+      },
+      volume: 2
+    }).toDestination();
+  } else if (sound == "Violin") {
+    leadSampler = new Tone.Sampler({
+      urls: {
+        A5:
+          "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F373750__samulis__solo-violin-vibrato-sustain-a5-llvln-arcovib-a5-p.wav?v=1598579480147"
+      },
+      volume: 2
+    }).toDestination();
+  } else if (sound == "Harp") {
+    leadSampler = new Tone.Sampler({
+      urls: {
+        C4:
+          "https://cdn.glitch.com/207f429b-3476-40eb-a33a-05bb64ff9656%2F521905__tarane468__12-haugharp-c4.wav?v=1596912821837"
+      },
+      volume: -12
+    }).toDestination();
   }
 
-  console.log(result);
+  Tone.Transport.start();
+  generateMusic();
 }

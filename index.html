@@ -43,16 +43,16 @@
     />
   </head>
   <body>
-    <h1>Bharata Natyam</h1>
+    <h1>Natya*ML</h1>
 
     <p>
       Bharatanatyam is a type of classical Indian dance. It is the oldest of
       these art forms and is still widely practiced today. In the times of
       ancient India, dance and music were a vital part of theater works. As a
       result, the word "natya" means both "dance" and "drama." Similarly,
-      bharatanatyam includes both pure dance and expressive story-telling. 
+      bharatanatyam includes both pure dance and expressive story-telling.
     </p>
-<!--     <ul>
+    <!--     <ul>
       <li>
         <h4>
           Nritta
@@ -75,14 +75,14 @@
     </ul> -->
 
     <p>
-      The goal of this project is to show bharatantyam steps in
-      a fun and interesting way. The music is AI-generated and the dancer
-      follows the music. The user may view the dancer's motions with PoseNet to
-      study the pose or with BodyPix to study the body parts. Both PoseNet and
-      BodyPix are from ml5.js. The music is generated using Magenta.js and is
-      powered using Tone.js.
+      The goal of this project is to show bharatantyam steps in a fun and
+      interesting way. The music is AI-generated and the dancer follows the
+      music. The user may view the dancer's motions with PoseNet to study the
+      pose or with BodyPix to study the body parts. Both PoseNet and BodyPix are
+      from ml5.js. The music is generated using Magenta.js and is powered using
+      Tone.js.
     </p>
- 
+
     <div class="text-container">
       <div class="center">
         <h5>
@@ -90,7 +90,6 @@
         </h5>
       </div>
     </div>
-  
 
     <h2>
       Option menu
@@ -103,6 +102,29 @@
     <p>
       Change the key of the music using the controls below. Default is C major.
     </p>
+
+    <label for="sounds"> Choose a sound:</label>
+
+    <select name="sounds" id="sounds" onchange="changeSound()">
+      <option
+        value="'E4':'https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F230670__akshaylaya__tha-e-122.wav?v=1598645852409'"
+        >Mridangam #1 - Tha</option
+      >
+      <option
+        value="'E3':'https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F231123__akshaylaya__thom-e-020.wav?v=1598645905841'"
+        >Mridangam #2 - Thom</option
+      >
+      <option
+        value="'A5':'https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2F373750__samulis__solo-violin-vibrato-sustain-a5-llvln-arcovib-a5-p.wav?v=1598579480147'"
+        >Violin</option
+      >
+      <option
+        value="'C3':'https://cdn.glitch.com/207f429b-3476-40eb-a33a-05bb64ff9656%2F521905__tarane468__12-haugharp-c4.wav?v=1596912821837'"
+        >Harp</option
+      >
+    </select>
+
+    <div></div>
 
     <label for="keys"> Choose a key:</label>
 
@@ -133,9 +155,60 @@
     <h3>
       Visualization
     </h3>
+    <p>
+      Choose which step you would like to see. Click "loop the step" to see the
+      step continually repeated. Click "Auto-choreograph" to see a choreography
+      starting with the step you choose. Default step is Thattadavu #1. Default
+      mode is auto-choreograph.
+    </p>
+
+    <label for="steps"> Choose a step:</label>
+
+    <select name="steps" id="steps">
+      <option
+        value="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FThattadavu%20%231_Trim.mp4?v=1598376217969"
+        >Thattadavu #1</option
+      >
+      <option
+        value="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FEttu%20Adavu%20%231_Trim.mp4?v=1598650839527"
+        >Ettu Adavu #1</option
+      >
+      <option
+        value="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FMandi%20Adavu%20%2309_Trim.mp4?v=1598651232743"
+        >Mandi Adavu #9</option
+      >
+      <option
+        value="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FTeermana%20Adavu%20(Alapadma)%20%235_Trim.mp4?v=1598721946974"
+        >Teermana Adavu (Alapadma) #5</option
+      >
+      <option
+        value="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FPakk%20Adavu%20%233_Trim.mp4?v=1598721957764"
+        >Pakk Adavu #3</option
+      >
+      <option
+        value="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FNattadavu%20%238_Trim.mp4?v=1598721958503"
+        >Nattadavu #8</option
+      >
+      <option
+        value="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FKudita%20mettu%20adavu%20%234_Trim.mp4?v=1598721962747"
+        >Kudita mettu adavu #4</option
+      >
+      <option
+        value="https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FJarkadavu%20%233_Trim.mp4?v=1598721971451"
+        >Jarkadavu #3</option
+      >
+    </select>
+
+    <button id="loop-step">
+      Loop the step
+    </button>
+
+    <button id="generate-step">
+      Auto-choreograph
+    </button>
 
     <p id="status"><b> Loading model... </b></p>
-    
+
     <div class="button-container">
       <div class="center">
         <button id="start">
@@ -147,7 +220,6 @@
         </button>
       </div>
     </div>
-    
 
     <div id="p5sketch"></div>
   </body>
