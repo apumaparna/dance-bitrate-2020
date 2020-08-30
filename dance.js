@@ -2,20 +2,6 @@
 createImg frameRate noLoop strokeWeight round createVideo loadImage background Tone generateMusic imageMode CENTER 
 CORNER translate grooveDrums round random DanceNet*/
 
-// Copyright (c) 2018 ml5
-//
-// This software is released under the MIT License.
-// https://opensource.org/licenses/MIT
-
-/* ===
-ml5 Example
-PoseNet example using p5.js
-=== */
-
-// PoseNet with a pre-recorded video, modified from:
-// https://github.com/ml5js/ml5-examples/blob/master/p5js/PoseNet/sketch.js
-
-// let poseNet;
 let poses = [];
 
 let video;
@@ -37,7 +23,7 @@ let classList = [];
 function setup() {
   let canvas = createCanvas(500, 500);
   canvas.parent("p5sketch");
-  
+
   background(0);
 
   for (let i = 0; i < vidList.length; i++) {
@@ -110,4 +96,37 @@ document.getElementById("start").onclick = async () => {
   generateMusic();
   // grooveDrums();
   Tone.Transport.start();
+};
+
+document.getElementById("loop-step").onclick = async () => {
+  console.log("loop-step");
+  video.stop();
+  currentClass.poseNet.removeListener("pose", callback);
+
+  var e = document.getElementById("steps");
+  // console.log(e);
+  var step = e.options[e.selectedIndex].value;
+  console.log(step);
+
+  let i = vidList.indexOf(step);
+  currentClass = classList[i];
+  console.log(currentClass);
+  video = currentClass.video;
+
+  currentClass.poseNet.on("pose", callback);
+  video.loop();
+  console.log("loop started");
+};
+
+document.getElementById("generate-step").onclick = async () => {
+  console.log("generate-step");
+
+  video.stop();
+  currentClass.poseNet.removeListener("pose", callback);
+
+  currentClass = random(classList);
+  video = currentClass.video;
+
+  currentClass.poseNet.on("pose", callback);
+  currentClass.vidLoad();
 };
