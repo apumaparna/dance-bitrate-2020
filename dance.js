@@ -35,7 +35,9 @@ let vidList = [
 let classList = [];
 
 function setup() {
-  createCanvas(500, 500);
+  let canvas = createCanvas(500, 500);
+  canvas.parent("p5sketch");
+  
   background(0);
 
   for (let i = 0; i < vidList.length; i++) {
@@ -63,7 +65,7 @@ function modelReady() {
   }
 
   if (ready) {
-    select("#status").html("Model Loaded");
+    select("#status").html("<b> <i> Model Loaded </b>");
   }
 }
 
