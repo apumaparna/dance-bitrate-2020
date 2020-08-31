@@ -136,7 +136,10 @@ function setup() {
   // );
 
   for (let i = 0; i < vidList.length; i++) {
-    elementList.push(createVideo(vidList[i]));
+    let vid = createVideo(vidList[i]);
+    vid.hide(); 
+    vid.volume(0); 
+    elementList.push(vid); 
   }
   
   video = elementList[0]; 
@@ -148,16 +151,16 @@ function setup() {
   // createSimplePalette();
   bodypix.segmentWithParts(video, gotResults, options);
   
-  video.onended(function(nextVideo) {
-    console.log("onended function called");
+//   video.onended(function(nextVideo) {
+//     console.log("onended function called");
 
-    video = random(elementList); 
+//     video = random(elementList); 
     
-    bodypix.segmentWithParts(video, gotResults, options);
-    vidLoad();
-  });
+//     bodypix.segmentWithParts(video, gotResults, options);
+//     vidLoad();
+//   });
 
-  // video.hide();
+  video.hide();
 }
 
 function gotResults(err, result) {
@@ -181,7 +184,7 @@ function gotResults(err, result) {
 
 function vidLoad() {
   video.stop();
-  video.play();
+  video.loop();
 }
 
 function createSimplePalette() {
@@ -234,4 +237,21 @@ document.getElementById("start").onclick = async () => {
   generateMusic();
   // grooveDrums();
   Tone.Transport.start();
+};
+
+document.getElementById("loop-step").onclick = async () => {
+  console.log("loop-step");
+  video.stop();
+
+  var e = document.getElementById("steps");
+  // console.log(e);
+  var step = e.options[e.selectedIndex].value;
+  console.log(step);
+
+  let i = vidList.indexOf(step);
+  video = elementList[i];
+  
+  bodypix.segmentWithParts(video, gotResults, options);
+  video.loop();
+  console.log("loop started");
 };
