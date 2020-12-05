@@ -33,7 +33,8 @@ function setup() {
   console.log(classList);
 
   currentClass = classList[0];
-  console.log(currentClass);
+  // console.log("currentClass")
+  // console.log(currentClass);
   video = currentClass.video;
   modelReady();
   currentClass.poseNet.on("pose", callback);
@@ -41,6 +42,8 @@ function setup() {
 
 function callback(results) {
   poses = results;
+  console.log("poses")
+  console.log(poses);
 }
 
 function modelReady() {
@@ -57,6 +60,9 @@ function modelReady() {
 
 function draw() {
   background(0);
+  
+  console.log("currentClass")
+  console.log(currentClass);
 
   imageMode(CENTER);
   video.size(1080, 1920);
@@ -66,8 +72,10 @@ function draw() {
   imageMode(CORNER);
 
   translate((width - 1080 / 3) / 2, (height - 1920 / 3) / 2);
+  // console.log("poses"); 
+  // console.log(poses); 
   currentClass.drawKeypoints(poses);
-  currentClass.drawSkeleton(poses);
+  currentClass.drawSkeleton(poses); 
 
   video.onended(function(nextVideo) {
     console.log("onended function called");
