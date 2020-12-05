@@ -161,6 +161,8 @@ function setup() {
 //   });
 
   video.hide();
+  
+  background(0);
 }
 
 function gotResults(err, result) {
