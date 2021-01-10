@@ -107,6 +107,7 @@ canvas {
   margin-right: auto;
   margin: auto;
   border-radius: 8px; 
+  display: inline-block;
 }
 
 .button {
@@ -117,4 +118,13 @@ canvas {
   border-radius: 8px;
   margin: 5px;
   text-decoration: none;
+}
+
+#wrapper {
+  margin: 0 auto; 
+  text-align: center; 
+}
+
+.sketch{
+  display: inline-block; 
 }

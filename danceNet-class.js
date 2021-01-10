@@ -1,6 +1,6 @@
 /* global ml5 createCanvas createCapture VIDEO width height select image fill noStroke ellipse stroke line
 createImg frameRate noLoop strokeWeight round createVideo loadImage background Tone generateMusic imageMode CENTER 
-CORNER translate grooveDrums round random*/
+CORNER translate grooveDrums round random p5*/
 
 class DanceNet {
   constructor(link) {
