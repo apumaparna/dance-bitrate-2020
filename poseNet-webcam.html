@@ -22,8 +22,9 @@
     <script src="https://unpkg.com/ml5@0.4.2/dist/ml5.min.js"></script>
 
     <!-- import the webpage's javascript file -->
-    <script src="/dance.js" defer></script>
-    <script src="/danceNet-class.js" defer></script>
+    <script src="/dance-webcam.js" defer></script>
+    <script src="/danceNet-class-instanceMode.js" defer></script>
+    <!--     <script src="/poseNet-webcam.js" defer></script> -->
     <script src="/music.js" defer></script>
     <!--     <script src="/bodypix1.js" defer></script> -->
 
@@ -204,7 +205,7 @@
     </button>
 
     <div></div>
-    
+
     <h3>
       Version
     </h3>
@@ -227,7 +228,10 @@
       </div>
     </div>
 
-    <div id="p5sketch"></div>
+    <div id="wrapper">
+      <div id="p5sketch" class = "sketch"></div>
+      <div id="webcam" class = "sketch"></div>
+    </div>
 
     <footer>
       <p>
