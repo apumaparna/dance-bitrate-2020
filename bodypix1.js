@@ -1,6 +1,6 @@
 /* global ml5 createCanvas createCapture VIDEO width height select image fill noStroke ellipse stroke line
 createImg frameRate noLoop strokeWeight round createVideo loadImage background Tone generateMusic imageMode CENTER 
-CORNER translate grooveDrums round random DanceNet floor colorMode HSB RGB color*/
+CORNER translate grooveDrums round random DanceNet floor colorMode HSB RGB color melodyRNNLoaded*/
 
 let bodypix;
 let video;
@@ -129,7 +129,8 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(500, 500);
+  let canvas = createCanvas(500, 500);
+  canvas.parent("p5sketch");
   // load up your video
   // video = createVideo(
   //   "https://cdn.glitch.com/423f41f1-4f4a-4017-b4fc-3b0b39eb0328%2FThattadavu%20%231_Trim.mp4?v=1598376217969",
@@ -137,12 +138,12 @@ function setup() {
 
   for (let i = 0; i < vidList.length; i++) {
     let vid = createVideo(vidList[i]);
-    vid.hide(); 
-    vid.volume(0); 
-    elementList.push(vid); 
+    vid.hide();
+    vid.volume(0);
+    elementList.push(vid);
   }
-  
-  video = elementList[0]; 
+
+  video = elementList[0];
   video.size(1080 / 3, 1920 / 3);
 
   // Create a palette - uncomment to test below
@@ -150,26 +151,34 @@ function setup() {
   // createRGBPalette();
   // createSimplePalette();
   bodypix.segmentWithParts(video, gotResults, options);
-  
-//   video.onended(function(nextVideo) {
-//     console.log("onended function called");
 
-//     video = random(elementList); 
-    
-//     bodypix.segmentWithParts(video, gotResults, options);
-//     vidLoad();
-//   });
+  //   video.onended(function(nextVideo) {
+  //     console.log("onended function called");
+
+  //     video = random(elementList);
+
+  //     bodypix.segmentWithParts(video, gotResults, options);
+  //     vidLoad();
+  //   });
 
   video.hide();
-  
+
   background(0);
+}
+
+function modelReady() {
+  if (melodyRNNLoaded) {
+    select("#status").html("<b> <i> Model Loaded </b>");
+  }
 }
 
 function gotResults(err, result) {
   if (err) {
     console.log(err);
     return;
-  }
+  } 
+  
+  modelReady(); 
 
   segmentation = result;
 
@@ -252,7 +261,7 @@ document.getElementById("loop-step").onclick = async () => {
 
   let i = vidList.indexOf(step);
   video = elementList[i];
-  
+
   bodypix.segmentWithParts(video, gotResults, options);
   video.loop();
   console.log("loop started");
