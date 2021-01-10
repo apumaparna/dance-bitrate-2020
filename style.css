@@ -108,3 +108,13 @@ canvas {
   margin: auto;
   border-radius: 8px; 
 }
+
+.button {
+  background-color: #FF758C;
+  border: none;
+  color: #F6EAEC;
+  padding: 3px 20px;
+  border-radius: 8px;
+  margin: 5px;
+  text-decoration: none;
+}
